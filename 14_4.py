@@ -238,9 +238,9 @@ def eval_genomes(genomes, config):
             player.distance = math.sqrt((player.x -randx)**2 + (player.y - randy)**2)
 
             if player.distance < player.oldDistance:
-                ge[players.index(player)].fitness += 25
+                ge[players.index(player)].fitness += 5
             else:
-                ge[players.index(player)].fitness -= 20
+                ge[players.index(player)].fitness -= 5
             
 
             widthDiff = abs(player.x-randx)
@@ -252,18 +252,6 @@ def eval_genomes(genomes, config):
             output = nets[players.index(player)].activate((player.score,widthDiff, heightDiff))
 
             
-            # if player.distance < 1000 :
-            #     ge[players.index(player)].fitness += 2
-            # elif player.distance < 800 :
-            #     ge[players.index(player)].fitness += 5
-            # elif player.distance < 500 :
-            #     ge[players.index(player)].fitness += 8
-            # elif player.distance < 200 :
-            #     ge[players.index(player)].fitness += 10
-            # elif player.distance < 100 :
-            #     ge[players.index(player)].fitness += 15
-
-
 
 
             if output[0] > 0.5:#up
@@ -280,11 +268,11 @@ def eval_genomes(genomes, config):
 
             
             if player.distance < diff:
-                ge[players.index(player)].fitness += 20
+                ge[players.index(player)].fitness += 10
                 if click == True:
                     randx = random.randint(50, width-diff)
                     randy = random.randint(100, height-diff)
-                    ge[players.index(player)].fitness += 100
+                    ge[players.index(player)].fitness += 150
                     player.score +=1
                     click = False
                 
