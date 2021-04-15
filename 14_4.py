@@ -156,8 +156,8 @@ def eval_genomes(genomes, config):
         # pygame.time.delay(60)
         timer -= dt 
 
-        if len(players) == 0:
-            break
+        # if len(players) == 0:
+        #     break
        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -200,10 +200,7 @@ def eval_genomes(genomes, config):
                 ge.pop(players.index(player))
                 players.pop(players.index(player))
             timer = 15
-            break
-        else:
-            for g in ge:
-                g.fitness +=2
+            #break
                     
 
 
@@ -238,9 +235,9 @@ def eval_genomes(genomes, config):
             player.distance = math.sqrt((player.x -randx)**2 + (player.y - randy)**2)
 
             if player.distance < player.oldDistance:
-                ge[players.index(player)].fitness += 5
+                ge[players.index(player)].fitness += 15
             else:
-                ge[players.index(player)].fitness -= 5
+                ge[players.index(player)].fitness -= 50
             
 
             widthDiff = abs(player.x-randx)
