@@ -156,8 +156,8 @@ def eval_genomes(genomes, config):
         # pygame.time.delay(60)
         timer -= dt 
 
-        # if len(players) == 0:
-        #     break
+        if len(players) == 0:
+            break
        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -195,12 +195,11 @@ def eval_genomes(genomes, config):
             for player in players:
                 print(len(players))
                 print("\t")
-                ge[players.index(player)].fitness -= 5
                 nets.pop(players.index(player))
                 ge.pop(players.index(player))
                 players.pop(players.index(player))
             timer = 15
-            #break
+            break
                     
 
 
@@ -235,7 +234,7 @@ def eval_genomes(genomes, config):
             player.distance = math.sqrt((player.x -randx)**2 + (player.y - randy)**2)
 
             if player.distance < player.oldDistance:
-                ge[players.index(player)].fitness += 15
+                ge[players.index(player)].fitness += 50
             else:
                 ge[players.index(player)].fitness -= 50
             
@@ -253,19 +252,19 @@ def eval_genomes(genomes, config):
 
             if output[0] > 0.5:#up
                 player.y -=5
-            elif output[1] > 0.5:#right
+            if output[1] > 0.5:#right
                 player.x +=5
-            elif output[2] > 0.5:#left
+            if output[2] > 0.5:#left
                 player.x -=5
-            elif output[3] > 0.5:#down
+            if output[3] > 0.5:#down
                 player.y +=5
-            elif output[4] > 0.5:#click
+            if output[4] > 0.5:#click
                 click = True
 
 
             
             if player.distance < diff:
-                ge[players.index(player)].fitness += 10
+                ge[players.index(player)].fitness += 100
                 if click == True:
                     randx = random.randint(50, width-diff)
                     randy = random.randint(100, height-diff)
