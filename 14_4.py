@@ -120,6 +120,8 @@ def eval_genomes(genomes, config):
 
     gen += 1
 
+    count =0
+
 
     
 
@@ -138,7 +140,15 @@ def eval_genomes(genomes, config):
         players.append(Player(960,540))
     
     for player in players:
-        player.color = colors[players.index(player)]
+        col = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+        player.color = col
+
+
+    # colorsPallete = []
+
+    # for x in 25:
+    #     colorsPallete.append((random.randint(0,255),(random.randint(0,255),(random.randint(0,255)))
+
         
     
     
@@ -156,8 +166,8 @@ def eval_genomes(genomes, config):
         # pygame.time.delay(60)
         timer -= dt 
 
-        if len(players) == 0:
-            break
+        # if len(players) == 0:
+        #     break
        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -166,6 +176,8 @@ def eval_genomes(genomes, config):
                 if event.key == pygame.K_ESCAPE:
                     run = False
                     pygame.quit() 
+                # if event.key == pygame.K_SPACE:
+                #     run = False 
 
         #prints
             
@@ -184,6 +196,10 @@ def eval_genomes(genomes, config):
         timeTextRect.topleft = [0,10]
         screen.blit(timeText, timeTextRect)
 
+        playersAliveText,playersAliveTextRect = drawText('Players Alive:' + str(count),'Arial',35,screen,RED,0 ,50)
+        playersAliveTextRect.midtop = [width/2,10]
+        screen.blit(playersAliveText, playersAliveTextRect)
+
 
         genText,genTextRect = drawText('Gen:' + str(gen),'Arial',35,screen,RED,0 ,50)
         genTextRect.topright = [width-20,10]
@@ -199,11 +215,11 @@ def eval_genomes(genomes, config):
                 ge.pop(players.index(player))
                 players.pop(players.index(player))
             timer = 15
-            break
+            # break
                     
 
 
-        
+            
         
 
         
@@ -211,6 +227,13 @@ def eval_genomes(genomes, config):
         pygame.draw.circle(screen,RED,(randx,randy),diff)
 
         for player in players:
+            if players.index(player) == 0:
+                count =1
+            else:
+                count +=1
+
+            pygame.draw.line(screen,RED,(player.x,player.y),(randx,randy),2)
+
             pygame.draw.circle(screen,player.color,(player.x,player.y),20)
             
             # popNumberText,popNumberTextRect = drawText(str(players.index(player)),'Arial',15,screen,RED,0 ,0)
@@ -234,9 +257,16 @@ def eval_genomes(genomes, config):
             player.distance = math.sqrt((player.x -randx)**2 + (player.y - randy)**2)
 
             if player.distance < player.oldDistance:
-                ge[players.index(player)].fitness += 50
-            else:
+                ge[players.index(player)].fitness += 200
+            elif player.distance > player.oldDistance:
                 ge[players.index(player)].fitness -= 50
+            else :
+                ge[players.index(player)].fitness -= 10
+                ge.pop(players.index(player))
+                nets.pop(players.index(player))
+                players.pop(players.index(player))
+
+
             
 
             widthDiff = abs(player.x-randx)
@@ -244,8 +274,8 @@ def eval_genomes(genomes, config):
 
         # print(str(widthDiff) + "  " + str(heightDiff))
 
-
-            output = nets[players.index(player)].activate((player.score,widthDiff, heightDiff))
+        for player in players:
+            output = nets[players.index(player)].activate((player.score,player.distance))
 
             
 
@@ -266,10 +296,10 @@ def eval_genomes(genomes, config):
             if player.distance < diff:
                 ge[players.index(player)].fitness += 100
                 if click == True:
-                    randx = random.randint(50, width-diff)
-                    randy = random.randint(100, height-diff)
                     ge[players.index(player)].fitness += 150
                     player.score +=1
+                    randx = random.randint(50, width-diff)
+                    randy = random.randint(100, height-diff)
                     click = False
                 
             player.oldDistance = player.distance
