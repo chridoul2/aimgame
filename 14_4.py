@@ -166,8 +166,8 @@ def eval_genomes(genomes, config):
         # pygame.time.delay(60)
         timer -= dt 
 
-        # if len(players) == 0:
-        #     break
+        if len(players) == 0:
+            break
        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -186,7 +186,7 @@ def eval_genomes(genomes, config):
                 
                 # #print("game is running")
                 # pygame.mouse.set_cursor(*pygame.cursors.broken_x)
-            #pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(False)
         screen.fill(LIGHTBLUE)
 
         pygame.draw.rect(screen,GRAY,(0,0,width,50))
@@ -215,7 +215,6 @@ def eval_genomes(genomes, config):
                 ge.pop(players.index(player))
                 players.pop(players.index(player))
             timer = 15
-            # break
                     
 
 
