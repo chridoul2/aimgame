@@ -25,13 +25,20 @@ widthBourder = 400
 heightBourder = 200
 
 
-
+pygame.init()
+pygame.mixer.init()
+# pygame.mixer.Sound.set
 pygame.font.init()
 sysfont = pygame.font.get_default_font()
 
 crosshairImg = pygame.image.load('crosshair.jpg') #load the image to a variable
 crosshairImgRect = crosshairImg.get_rect() #create a rect to for the image
 
+#load sounds from file
+gunShotSound = pygame.mixer.Sound(os.path.join('sound', 'gun_shot.ogg'))
+gunShotSound.set_volume(0.009)
+dingSound = pygame.mixer.Sound(os.path.join('sound', 'ding.ogg'))
+dingSound.set_volume(0.009)
 
 
 class Ball:
@@ -82,7 +89,6 @@ def randomCircle(screen,color,radius):
    
 
 def main():
-    pygame.init()
     clock = pygame.time.Clock()
     game = False
     score = 0
@@ -95,8 +101,6 @@ def main():
     bestscore = 0
     bestAccuracy = 0.00
     
-    mouseX = pygame.mouse.get_pos()[0]
-    mouseY = pygame.mouse.get_pos()[1]
 
     balls = []
 
@@ -128,6 +132,12 @@ def main():
 
         #prints
             if(game==True):
+
+                
+                mouseX = pygame.mouse.get_pos()[0]
+                mouseY = pygame.mouse.get_pos()[1]
+
+
                 
                 pygame.event.set_grab(True)
                 pygame.mouse.set_visible(True) 
@@ -187,23 +197,22 @@ def main():
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print('clicked')
+                    
                     count+=1
                     for ball in balls:
                         print("loop")
                         if math.sqrt((mouseX -ball.x)**2 + (mouseY -ball.y)**2) < diff:
                             print('inside the ball')
-                            #rand = random.sample(range(50, 1870), 1)
-                            #rand2 = random.sample(range(100, 1030), 1)
-                            # rand = random.randint(widthBourder, width-widthBourder)
-                            # rand2 = random.randint(heightBourder, height-heightBourder)
+                            dingSound.play()
                             
                             ball.x = random.randint(widthBourder, width-widthBourder)
                             ball.y =  random.randint(heightBourder, height-heightBourder) 
                             
                             score += 1
                             inside += 1
-                    # elif inside > 0:
-                    #     inside -= 1
+                        else:
+                            gunShotSound.play()
+
 
                 
                 
